@@ -1,0 +1,23 @@
+---
+parent: "api_v1_alerts"
+name: "ApiV1AlertsGetInvalidDatatypePage"
+description: null
+type: "SUITE"
+endpoint: "/api/v1/alerts?page=VkTXwM"
+method: "GET"
+auth: "Default"
+headers:
+- "Accept: application/json"
+- "Content-Type: application/json"
+testCases: []
+assertions:
+- "@StatusCode != 401"
+- "@StatusCode != 404"
+tags:
+- "V1"
+authors:
+- "FX Bot"
+category: "Negative"
+severity: "Critical"
+inactive: false
+policies: null
