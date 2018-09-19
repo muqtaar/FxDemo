@@ -9,6 +9,23 @@ generators:
   database: null
   inactive: false
   matches: []
+- type: "sla"
+  assertions:
+  - "@StatusCode == 200"
+  - "@StatusCode != 404"
+  severity: null
+  database: null
+  inactive: false
+  matches:
+  - name: null
+    value: "1000"
+    methods: "Get"
+    denyRoles: null
+    allowRoles: null
+    pathPatterns: "/**"
+    resourceSamples: null
+    queryParams: null
+    bodyProperties: null
 - type: "anonymous_invalid"
   assertions:
   - "@StatusCode != 200"
@@ -23,6 +40,49 @@ generators:
   database: null
   inactive: false
   matches: []
+- type: "rbac"
+  assertions:
+  - "@StatusCode == 403"
+  severity: null
+  database: null
+  inactive: false
+  matches:
+  - name: "Admin access"
+    value: null
+    methods: "Post, Put, Delete"
+    denyRoles: "Writer, Reader"
+    allowRoles: "Admin"
+    pathPatterns: "/api/v1/orgs/**, /api/v1/accounts/**"
+    resourceSamples: null
+    queryParams: null
+    bodyProperties: null
+  - name: "Writer access"
+    value: null
+    methods: "Post, Put, Delete"
+    denyRoles: "Reader"
+    allowRoles: "Writer"
+    pathPatterns: "/api/v1/projects/**, /api/v1/regions/**"
+    resourceSamples: null
+    queryParams: null
+    bodyProperties: null
+  - name: "Collaborator access"
+    value: null
+    methods: "Post, Delete"
+    denyRoles: "Collaborator"
+    allowRoles: "Reader, Writer"
+    pathPatterns: "/api/v1/projects/**"
+    resourceSamples: null
+    queryParams: null
+    bodyProperties: null
+  - name: "Reader access"
+    value: null
+    methods: "Get, Post, Put, Delete"
+    denyRoles: "Other"
+    allowRoles: "Reader, Writer"
+    pathPatterns: "/api/v1/**"
+    resourceSamples: null
+    queryParams: null
+    bodyProperties: null
 - type: "DDOS"
   assertions:
   - "@StatusCode != 401"
@@ -35,6 +95,7 @@ generators:
     value: null
     methods: null
     denyRoles: null
+    allowRoles: null
     pathPatterns: null
     resourceSamples: null
     queryParams: null
@@ -51,7 +112,8 @@ generators:
   matches: []
 - type: "sql_injection_timebound"
   assertions:
-  - "@ResponseTime < 7000"
+  - "@ResponseTime > 7000"
+  - "@ResponseTime < 10000"
   - "@StatusCode != 404"
   severity: null
   database:
@@ -69,45 +131,6 @@ generators:
   database: null
   inactive: false
   matches: []
-- type: "rbac"
-  assertions:
-  - "@StatusCode == 403"
-  severity: null
-  database: null
-  inactive: false
-  matches:
-  - name: "Admin access"
-    value: null
-    methods: "Post, Put, Delete"
-    denyRoles: "Writer, Reader"
-    pathPatterns: "/api/v1/orgs/**, /api/v1/accounts/**"
-    resourceSamples: null
-    queryParams: null
-    bodyProperties: null
-  - name: "Writer access"
-    value: null
-    methods: "Post, Put, Delete"
-    denyRoles: "Reader"
-    pathPatterns: "/api/v1/projects/**, /api/v1/regions/**"
-    resourceSamples: null
-    queryParams: null
-    bodyProperties: null
-  - name: "Collaborator access"
-    value: null
-    methods: "Post, Delete"
-    denyRoles: "Collaborator"
-    pathPatterns: "/api/v1/projects/**"
-    resourceSamples: null
-    queryParams: null
-    bodyProperties: null
-  - name: "Reader access"
-    value: null
-    methods: "Get, Post, Put, Delete"
-    denyRoles: "Other"
-    pathPatterns: "/api/v1/**"
-    resourceSamples: null
-    queryParams: null
-    bodyProperties: null
 - type: "invalid_datatype"
   assertions:
   - "@StatusCode != 401"
